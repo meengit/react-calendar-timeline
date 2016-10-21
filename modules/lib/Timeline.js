@@ -913,12 +913,12 @@ var _initialiseProps = function _initialiseProps() {
 
   this.selectItem = function (item, clickType, e) {
     if (_this3.state.selectedItem === item || _this3.props.itemTouchSendsClick && clickType === 'touch') {
-      if (item && _this3.props.onItemClick) {
+      if (item !== null && item !== false && _this3.props.onItemClick) {
         _this3.props.onItemClick(item, e);
       }
     } else {
       _this3.setState({ selectedItem: item });
-      if (item && _this3.props.onItemSelect) {
+      if (item !== null && item !== false && _this3.props.onItemClick) {
         _this3.props.onItemSelect(item, e);
       }
     }
