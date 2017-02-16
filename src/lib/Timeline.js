@@ -9,6 +9,7 @@ import Header from './layout/Header'
 import VerticalLines from './lines/VerticalLines'
 import HorizontalLines from './lines/HorizontalLines'
 import TodayLine from './lines/TodayLine'
+import Ranges from './ranges/Ranges'
 
 import { getMinUnit, getNextUnit, getParentPosition, _get, _length, stack, nostack, calculateDimensions, getGroupOrders, getVisibleItems, hasSomeParentTheClass } from './utils.js'
 
@@ -93,7 +94,8 @@ export default class ReactCalendarTimeline extends Component {
 
     children: PropTypes.node,
 
-    selected: PropTypes.array
+    selected: PropTypes.array,
+    ranges: PropTypes.array
   }
 
   static defaultProps = {
@@ -157,7 +159,8 @@ export default class ReactCalendarTimeline extends Component {
     onBoundsChange: null,
     children: null,
 
-    selected: null
+    selected: null,
+    ranges: null
   }
 
   constructor (props) {
@@ -635,6 +638,19 @@ export default class ReactCalendarTimeline extends Component {
     )
   }
 
+  ranges (canvasTimeStart, canvasTimeEnd, canvasWidth, height, headerHeight) {
+    return (
+      <Ranges canvasTimeStart={canvasTimeStart}
+              canvasTimeEnd={canvasTimeEnd}
+              canvasWidth={canvasWidth}
+              height={height}
+              headerHeight={headerHeight}
+              keys={this.props.keys}
+              ranges={this.props.ranges}
+      />
+    )
+  }
+
   verticalLines (canvasTimeStart, zoom, canvasTimeEnd, canvasWidth, minUnit, timeSteps, height, headerHeight) {
     return (
       <VerticalLines canvasTimeStart={canvasTimeStart}
@@ -880,6 +896,7 @@ export default class ReactCalendarTimeline extends Component {
               {this.verticalLines(canvasTimeStart, zoom, canvasTimeEnd, canvasWidth, minUnit, timeSteps, height, headerHeight)}
               {this.horizontalLines(canvasTimeStart, zoom, canvasTimeEnd, canvasWidth, groupHeights, headerHeight)}
               {this.todayLine(canvasTimeStart, zoom, canvasTimeEnd, canvasWidth, minUnit, height, headerHeight)}
+              {this.ranges(canvasTimeStart, canvasTimeEnd, canvasWidth, height, headerHeight)}
               {this.infoLabel()}
               {this.header(
                 canvasTimeStart,
