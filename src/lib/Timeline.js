@@ -896,7 +896,7 @@ export default class ReactCalendarTimeline extends Component {
               {this.verticalLines(canvasTimeStart, zoom, canvasTimeEnd, canvasWidth, minUnit, timeSteps, height, headerHeight)}
               {this.horizontalLines(canvasTimeStart, zoom, canvasTimeEnd, canvasWidth, groupHeights, headerHeight)}
               {this.todayLine(canvasTimeStart, zoom, canvasTimeEnd, canvasWidth, minUnit, height, headerHeight)}
-              {this.ranges(canvasTimeStart, canvasTimeEnd, canvasWidth, height, headerHeight)}
+              {this.props.ranges && this.ranges(canvasTimeStart, canvasTimeEnd, canvasWidth, height, headerHeight)}
               {this.infoLabel()}
               {this.header(
                 canvasTimeStart,

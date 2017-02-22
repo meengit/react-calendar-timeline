@@ -97,8 +97,20 @@ Expects either a vanilla JS array or an immutableJS array, consisting of objects
 
 The preferred (fastest) option is to give unix timestamps in milliseconds for `start_time` and `end_time`. Objects that convert to them (java Date or moment()) will also work, but will be a lot slower.
 
+
+### ranges
+Expects either a vanilla JS array or an immutableJS array, consisting of objects with the following attributes:
+```
+{
+  id: 1,
+  start_time: 1457902922261,
+  end_time: 1457902922261 + 86400000,
+  className: 'weekend',
+}
+```
+
 ### keys
-An array specifying keys in the `items` and `groups` objects. Defaults to
+An array specifying keys in the `items`, `groups` and `ranges` objects. Defaults to
 ```
 {
   groupIdKey: 'id',
@@ -109,6 +121,9 @@ An array specifying keys in the `items` and `groups` objects. Defaults to
   itemGroupKey: 'group',
   itemTimeStartKey: 'start_time',
   itemTimeEndKey: 'end_time'
+  rangeIdKey: 'id',
+  rangeTimeStartKey: 'start_time',
+  rangeTimeEndKey: 'end_time'
 }
 ```
 

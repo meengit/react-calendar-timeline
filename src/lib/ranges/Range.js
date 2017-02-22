@@ -17,7 +17,7 @@ export default class Range extends Component {
 
   left (canvasTimeStart, rangeStart, ratio) {
     if (rangeStart < canvasTimeStart) {
-     return 0
+      return 0;
     }
 
     if (rangeStart > canvasTimeStart) {
