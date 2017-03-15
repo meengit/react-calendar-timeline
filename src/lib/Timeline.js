@@ -21,7 +21,10 @@ const defaultKeys = {
   itemDivTitleKey: 'title',
   itemGroupKey: 'group',
   itemTimeStartKey: 'start_time',
-  itemTimeEndKey: 'end_time'
+  itemTimeEndKey: 'end_time',
+  rangeIdKey: 'id',
+  rangeTimeStartKey: 'start_time',
+  rangeTimeEndKey: 'end_time'
 }
 
 const defaultTimeSteps = {
