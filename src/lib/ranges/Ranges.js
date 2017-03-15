@@ -9,16 +9,8 @@ export default class Ranges extends Component {
     canvasWidth: PropTypes.number.isRequired,
     height: PropTypes.number.isRequired,
     headerHeight: PropTypes.number.isRequired,
+    keys: PropTypes.object.isRequired,
     ranges: PropTypes.array.isRequired
-  }
-
-  static defaultProps = {
-    canvasTimeEnd: null,
-    canvasTimeStart: null,
-    canvasWidth: null,
-    height: null,
-    headerHeight: null,
-    ranges: null
   }
 
   shouldComponentUpdate (nextProps, nextState) {
@@ -26,6 +18,7 @@ export default class Ranges extends Component {
              nextProps.canvasTimeEnd === this.props.canvasTimeEnd &&
              nextProps.canvasWidth === this.props.canvasWidth &&
              nextProps.height === this.props.height &&
+             nextProps.keys === this.props.keys &&
              nextProps.headerHeight === this.props.headerHeight &&
              arraysEqual(nextProps.ranges, this.props.ranges)
       )
@@ -51,6 +44,7 @@ export default class Ranges extends Component {
                                            headerHeight={this.props.headerHeight}
                                            key={_get(range, rangeIdKey)}
                                            keys={this.props.keys}
+                                           range={range}
                                            rangeStart={range.start}
                                            rangeEnd={range.end} />)}
       </div>
