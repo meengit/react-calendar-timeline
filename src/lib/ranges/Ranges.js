@@ -29,37 +29,14 @@ export default class Ranges extends Component {
   }
 
   getVisibleRanges (visibleTimeStart, visibleTimeEnd, ranges) {
-    return this.props.ranges.filter(range => {
-      let position = {
-        start: range.start,
-        end: range.end
+    return ranges.reduce((acc, range) => {
+      if (visibleTimeStart < range.end && visibleTimeEnd > range.start) {
+        acc[range.id - 1] = range
+        return acc
+      } else {
+        return acc
       }
-
-      if (visibleTimeStart >= range.start) {
-        position.start = visibleTimeStart
-      }
-
-      if (visibleTimeEnd <= range.end) {
-        position.end = visibleTimeEnd
-      }
-
-      if (visibleTimeStart > position.end || visibleTimeEnd < position.start) {
-        position = {}
-        return
-      }
-
-      return position
-    })
-  }
-
-  rangeIsVisible (range) {
-    function isNumber (value) {
-      return value !== undefined && typeof (value) === 'number' && !isNaN(value)
-    }
-
-    if (isNumber(range.start) && isNumber(range.end)) {
-      return range
-    }
+    }, [])
   }
 
   render () {
@@ -69,8 +46,7 @@ export default class Ranges extends Component {
 
     return (
       <div className='rct-ranges'>
-        {visibleRanges.filter(range => this.rangeIsVisible(range))
-                      .map(range => <Range canvasTimeStart={this.props.canvasTimeStart}
+        {visibleRanges.map(range => <Range canvasTimeStart={this.props.canvasTimeStart}
                                            canvasTimeEnd={this.props.canvasTimeEnd}
                                            canvasWidth={this.props.canvasWidth}
                                            className={range.className}
