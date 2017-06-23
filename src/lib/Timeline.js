@@ -650,6 +650,8 @@ export default class ReactCalendarTimeline extends Component {
               headerHeight={headerHeight}
               keys={this.props.keys}
               ranges={this.props.ranges}
+              visibleTimeStart={this.state.visibleTimeStart}
+              visibleTimeEnd={this.state.visibleTimeEnd}
       />
     )
   }

@@ -47,7 +47,6 @@ export default class Range extends Component {
   }
 
   render () {
-    console.log('Range: ', this.props.range)
     if (this.rangeTimeStart !== null && this.rangeTimeEnd !== null) {
       const { canvasTimeEnd, canvasTimeStart, canvasWidth } = this.props
       let ratio = canvasWidth / (canvasTimeEnd - canvasTimeStart)

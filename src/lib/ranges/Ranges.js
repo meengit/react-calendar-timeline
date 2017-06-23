@@ -10,7 +10,9 @@ export default class Ranges extends Component {
     height: PropTypes.number.isRequired,
     headerHeight: PropTypes.number.isRequired,
     keys: PropTypes.object.isRequired,
-    ranges: PropTypes.array.isRequired
+    ranges: PropTypes.array.isRequired,
+    visibleTimeStart: PropTypes.number.isRequired,
+    visibleTimeEnd: PropTypes.number.isRequired
   }
 
   shouldComponentUpdate (nextProps, nextState) {
@@ -20,23 +22,55 @@ export default class Ranges extends Component {
              nextProps.height === this.props.height &&
              nextProps.keys === this.props.keys &&
              nextProps.headerHeight === this.props.headerHeight &&
-             arraysEqual(nextProps.ranges, this.props.ranges)
+             arraysEqual(nextProps.ranges, this.props.ranges) &&
+             nextProps.visibleTimeStart === this.props.visibleTimeStart &&
+             nextProps.visibleTimeEnd === this.props.visibleTimeEnd
       )
   }
 
-  getVisibleRanges (canvasTimeStart, canvasTimeEnd, ranges) {
+  getVisibleRanges (visibleTimeStart, visibleTimeEnd, ranges) {
     return this.props.ranges.filter(range => {
-      return range.start <= canvasTimeEnd && range.end >= canvasTimeStart
+      let position = {
+        start: range.start,
+        end: range.end
+      }
+
+      if (visibleTimeStart >= range.start) {
+        position.start = visibleTimeStart
+      }
+
+      if (visibleTimeEnd <= range.end) {
+        position.end = visibleTimeEnd
+      }
+
+      if (visibleTimeStart > position.end || visibleTimeEnd < position.start) {
+        position = {}
+        return
+      }
+
+      return position
     })
   }
 
+  rangeIsVisible (range) {
+    function isNumber (value) {
+      return value !== undefined && typeof (value) === 'number' && !isNaN(value)
+    }
+
+    if (isNumber(range.start) && isNumber(range.end)) {
+      return range
+    }
+  }
+
   render () {
-    const { canvasTimeStart, canvasTimeEnd } = this.props
+    const { visibleTimeStart, visibleTimeEnd } = this.props
     const { rangeIdKey } = this.props.keys
-    let visibleRanges = this.getVisibleRanges(canvasTimeStart, canvasTimeEnd, this.props.ranges)
+    let visibleRanges = this.getVisibleRanges(visibleTimeStart, visibleTimeEnd, this.props.ranges)
+
     return (
       <div className='rct-ranges'>
-        {visibleRanges.map(range => <Range canvasTimeStart={this.props.canvasTimeStart}
+        {visibleRanges.filter(range => this.rangeIsVisible(range))
+                      .map(range => <Range canvasTimeStart={this.props.canvasTimeStart}
                                            canvasTimeEnd={this.props.canvasTimeEnd}
                                            canvasWidth={this.props.canvasWidth}
                                            className={range.className}
