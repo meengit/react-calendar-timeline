@@ -1,29 +1,35 @@
 import React, { Component } from 'react'
 import { _get } from '../utils'
 export default class Range extends Component {
+  static propTypes = {
+    canvasTimeStart: React.PropTypes.number.isRequired,
+    canvasTimeEnd: React.PropTypes.number.isRequired,
+    canvasWidth: React.PropTypes.number.isRequired,
+    height: React.PropTypes.number.isRequired,
+    headerHeight: React.PropTypes.number.isRequired,
+    keys: React.PropTypes.object.isRequired,
+    range: React.PropTypes.object.isRequired
+  }
 
   constructor (props) {
     super(props)
 
-    this.cacheDataFromProps(props)
+    this.state = {
+      rangeId: _get(props.range, props.keys.rangeIdKey),
+      rangeTimeStart: _get(props.range, props.keys.rangeTimeStartKey),
+      rangeTimeEnd: _get(props.range, props.keys.rangeTimeEndKey)
+    }
   }
 
   shouldComponentUpdate (nextProps, nextState) {
     return !(nextProps.canvasTimeStart === this.props.canvasTimeStart &&
              nextProps.canvasTimeEnd === this.props.canvasTimeEnd &&
              nextProps.canvasWidth === this.props.canvasWidth &&
-             nextProps.className === this.props.className &&
              nextProps.height === this.props.height &&
              nextProps.headerHeight === this.props.headerHeight &&
              nextProps.keys === this.props.keys &&
              nextProps.range === this.props.range
     )
-  }
-
-  cacheDataFromProps (props) {
-    this.rangeId = _get(props.range, props.keys.rangeIdKey)
-    this.rangeTimeStart = _get(props.range, props.keys.rangeTimeStartKey)
-    this.rangeTimeEnd = _get(props.range, props.keys.rangeTimeEndKey)
   }
 
   left (canvasTimeStart, rangeTimeStart, ratio) {
@@ -47,13 +53,14 @@ export default class Range extends Component {
   }
 
   render () {
-    if (this.rangeTimeStart !== null && this.rangeTimeEnd !== null) {
+    const { rangeTimeStart, rangeTimeEnd } = this.state
+    if (rangeTimeStart !== null && rangeTimeEnd !== null) {
       const { canvasTimeEnd, canvasTimeStart, canvasWidth } = this.props
       let ratio = canvasWidth / (canvasTimeEnd - canvasTimeStart)
       let top = this.props.headerHeight
       let height = this.props.height - this.props.headerHeight
-      let left = this.left(canvasTimeStart, this.rangeTimeStart, ratio)
-      let width = this.width(canvasTimeEnd, canvasTimeStart, canvasWidth, left, this.rangeTimeEnd, ratio)
+      let left = this.left(canvasTimeStart, rangeTimeStart, ratio)
+      let width = this.width(canvasTimeEnd, canvasTimeStart, canvasWidth, left, rangeTimeEnd, ratio)
 
       let styles = {
         top: `${top}px`,
@@ -63,19 +70,12 @@ export default class Range extends Component {
       }
 
       let classNames = 'rct-range' + (this.props.range.className ? ` ${this.props.range.className}` : '')
-
       return <div className={classNames} style={styles} />
     } else {
-      return <div />
+      return null
     }
   }
 }
 
-Range.propTypes = {
-  canvasTimeStart: React.PropTypes.number.isRequired,
-  canvasTimeEnd: React.PropTypes.number.isRequired,
-  keys: React.PropTypes.object.isRequired,
-  range: React.PropTypes.object.isRequired
-}
 Range.defaultProps = {
 }
