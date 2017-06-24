@@ -31,7 +31,7 @@ export default class Ranges extends Component {
   getVisibleRanges (visibleTimeStart, visibleTimeEnd, ranges) {
     return ranges.reduce((acc, range) => {
       if (visibleTimeStart < range.end && visibleTimeEnd > range.start) {
-        acc[range.id - 1] = range
+        acc.push(range)
         return acc
       } else {
         return acc
