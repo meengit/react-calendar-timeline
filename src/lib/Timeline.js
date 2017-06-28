@@ -11,6 +11,7 @@ import VerticalLines from './lines/VerticalLines'
 import HorizontalLines from './lines/HorizontalLines'
 import TodayLine from './lines/TodayLine'
 import CursorLine from './lines/CursorLine'
+import Ranges from './ranges/Ranges'
 
 import windowResizeDetector from '../resize-detector/window'
 
@@ -25,7 +26,10 @@ export const defaultKeys = {
   itemDivTitleKey: 'title',
   itemGroupKey: 'group',
   itemTimeStartKey: 'start_time',
-  itemTimeEndKey: 'end_time'
+  itemTimeEndKey: 'end_time',
+  rangeIdKey: 'id',
+  rangeTimeStartKey: 'start',
+  rangeTimeEndKey: 'end'
 }
 
 export const defaultTimeSteps = {
@@ -136,7 +140,10 @@ export default class ReactCalendarTimeline extends Component {
       itemDivTitleKey: PropTypes.string,
       itemGroupKey: PropTypes.string,
       itemTimeStartKey: PropTypes.string,
-      itemTimeEndKey: PropTypes.string
+      itemTimeEndKey: PropTypes.string,
+      rangeIdKey: PropTypes.string,
+      rangeTimeStartKey: PropTypes.string,
+      rangeTimeEndKey: PropTypes.string
     }),
 
     timeSteps: PropTypes.shape({
@@ -268,7 +275,8 @@ export default class ReactCalendarTimeline extends Component {
     headerLabelFormats: defaultHeaderLabelFormats,
     subHeaderLabelFormats: defaultSubHeaderLabelFormats,
 
-    selected: null
+    selected: null,
+    ranges: null
   }
 
   constructor (props) {
@@ -813,6 +821,21 @@ export default class ReactCalendarTimeline extends Component {
     )
   }
 
+  ranges (canvasTimeStart, canvasTimeEnd, canvasWidth, height, headerHeight) {
+    return (
+      <Ranges canvasTimeStart={canvasTimeStart}
+              canvasTimeEnd={canvasTimeEnd}
+              canvasWidth={canvasWidth}
+              height={height}
+              headerHeight={headerHeight}
+              keys={this.props.keys}
+              ranges={this.props.ranges}
+              visibleTimeStart={this.state.visibleTimeStart}
+              visibleTimeEnd={this.state.visibleTimeEnd}
+      />
+    )
+  }
+
   verticalLines (canvasTimeStart, zoom, canvasTimeEnd, canvasWidth, minUnit, timeSteps, height, headerHeight) {
     return (
       <VerticalLines canvasTimeStart={canvasTimeStart}
@@ -1079,7 +1102,7 @@ export default class ReactCalendarTimeline extends Component {
   }
 
   render () {
-    const { items, groups, headerLabelGroupHeight, headerLabelHeight, sidebarWidth, rightSidebarWidth, timeSteps, showCursorLine } = this.props
+    const { items, groups, ranges, headerLabelGroupHeight, headerLabelHeight, sidebarWidth, rightSidebarWidth, timeSteps, showCursorLine } = this.props
     const { draggingItem, resizingItem, isDragging, width, visibleTimeStart, visibleTimeEnd, canvasTimeStart, mouseOverCanvas, cursorTime } = this.state
     let { dimensionItems, height, groupHeights, groupTops } = this.state
 
@@ -1140,6 +1163,9 @@ export default class ReactCalendarTimeline extends Component {
               {this.todayLine(canvasTimeStart, zoom, canvasTimeEnd, canvasWidth, minUnit, height, headerHeight)}
               {mouseOverCanvas && showCursorLine
                 ? this.cursorLine(cursorTime, canvasTimeStart, zoom, canvasTimeEnd, canvasWidth, minUnit, height, headerHeight)
+                : null}
+              {ranges
+                ? this.ranges(canvasTimeStart, canvasTimeEnd, canvasWidth, height, headerHeight)
                 : null}
               {this.infoLabel()}
               {this.header(
