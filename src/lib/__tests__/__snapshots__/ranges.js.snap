@@ -1,0 +1,215 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Ranges do not render Range with end smaller than visible time start 1`] = `
+initialize {
+  "0": Object {
+    "attribs": Object {},
+    "children": Array [
+      Object {
+        "attribs": Object {
+          "class": "rct-ranges",
+        },
+        "children": Array [],
+        "name": "div",
+        "next": null,
+        "parent": null,
+        "prev": null,
+        "root": [Circular],
+        "type": "tag",
+      },
+    ],
+    "name": "root",
+    "next": null,
+    "parent": null,
+    "prev": null,
+    "type": "root",
+  },
+  "_root": [Circular],
+  "length": 1,
+  "options": Object {
+    "decodeEntities": true,
+    "normalizeWhitespace": false,
+    "withDomLvl1": true,
+    "xmlMode": false,
+  },
+}
+`;
+
+exports[`Ranges do not render Range with start after than visible time end 1`] = `
+initialize {
+  "0": Object {
+    "attribs": Object {},
+    "children": Array [
+      Object {
+        "attribs": Object {
+          "class": "rct-ranges",
+        },
+        "children": Array [],
+        "name": "div",
+        "next": null,
+        "parent": null,
+        "prev": null,
+        "root": [Circular],
+        "type": "tag",
+      },
+    ],
+    "name": "root",
+    "next": null,
+    "parent": null,
+    "prev": null,
+    "type": "root",
+  },
+  "_root": [Circular],
+  "length": 1,
+  "options": Object {
+    "decodeEntities": true,
+    "normalizeWhitespace": false,
+    "withDomLvl1": true,
+    "xmlMode": false,
+  },
+}
+`;
+
+exports[`Ranges render Range in visible time 1`] = `
+initialize {
+  "0": Object {
+    "attribs": Object {},
+    "children": Array [
+      Object {
+        "attribs": Object {
+          "class": "rct-ranges",
+        },
+        "children": Array [
+          Object {
+            "attribs": Object {
+              "class": "rct-range",
+              "style": "top:60px;left:1333px;height:1130px;width:334px;",
+            },
+            "children": Array [],
+            "name": "div",
+            "next": null,
+            "parent": [Circular],
+            "prev": null,
+            "type": "tag",
+          },
+        ],
+        "name": "div",
+        "next": null,
+        "parent": null,
+        "prev": null,
+        "root": [Circular],
+        "type": "tag",
+      },
+    ],
+    "name": "root",
+    "next": null,
+    "parent": null,
+    "prev": null,
+    "type": "root",
+  },
+  "_root": [Circular],
+  "length": 1,
+  "options": Object {
+    "decodeEntities": true,
+    "normalizeWhitespace": false,
+    "withDomLvl1": true,
+    "xmlMode": false,
+  },
+}
+`;
+
+exports[`Ranges render Range that overlaps visible time end 1`] = `
+initialize {
+  "0": Object {
+    "attribs": Object {},
+    "children": Array [
+      Object {
+        "attribs": Object {
+          "class": "rct-ranges",
+        },
+        "children": Array [
+          Object {
+            "attribs": Object {
+              "class": "rct-range",
+              "style": "top:60px;left:1667px;height:1130px;width:666px;",
+            },
+            "children": Array [],
+            "name": "div",
+            "next": null,
+            "parent": [Circular],
+            "prev": null,
+            "type": "tag",
+          },
+        ],
+        "name": "div",
+        "next": null,
+        "parent": null,
+        "prev": null,
+        "root": [Circular],
+        "type": "tag",
+      },
+    ],
+    "name": "root",
+    "next": null,
+    "parent": null,
+    "prev": null,
+    "type": "root",
+  },
+  "_root": [Circular],
+  "length": 1,
+  "options": Object {
+    "decodeEntities": true,
+    "normalizeWhitespace": false,
+    "withDomLvl1": true,
+    "xmlMode": false,
+  },
+}
+`;
+
+exports[`Ranges render Range that overlaps visible time start 1`] = `
+initialize {
+  "0": Object {
+    "attribs": Object {},
+    "children": Array [
+      Object {
+        "attribs": Object {
+          "class": "rct-ranges",
+        },
+        "children": Array [
+          Object {
+            "attribs": Object {
+              "class": "rct-range",
+              "style": "top:60px;left:667px;height:1130px;width:666px;",
+            },
+            "children": Array [],
+            "name": "div",
+            "next": null,
+            "parent": [Circular],
+            "prev": null,
+            "type": "tag",
+          },
+        ],
+        "name": "div",
+        "next": null,
+        "parent": null,
+        "prev": null,
+        "root": [Circular],
+        "type": "tag",
+      },
+    ],
+    "name": "root",
+    "next": null,
+    "parent": null,
+    "prev": null,
+    "type": "root",
+  },
+  "_root": [Circular],
+  "length": 1,
+  "options": Object {
+    "decodeEntities": true,
+    "normalizeWhitespace": false,
+    "withDomLvl1": true,
+    "xmlMode": false,
+  },
+}
+`;

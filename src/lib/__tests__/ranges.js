@@ -1,103 +1,103 @@
 import React from 'react'
-import { mount } from 'enzyme'
-import Timeline from '../Timeline'
+import { render } from 'enzyme'
+import Ranges from '../ranges/Ranges'
 
-import moment from 'moment'
+const defaults = {
+  canvasWidth: 3000,
+  height: 1190,
+  headerHeight: 60,
+  visibleTimeStart: 3000,
+  visibleTimeEnd: 6000
+}
 
-const groups = [
-  {id: 2, title: 'group 2'},
-  {id: 1, title: 'group 1'},
-  {id: 3, title: 'group 3'}
-]
+const zoom = defaults.visibleTimeEnd - defaults.visibleTimeStart // 3000
+const canvasTimeStart = defaults.visibleTimeStart - (defaults.visibleTimeEnd - defaults.visibleTimeStart) // 0
+const canvasTimeEnd = canvasTimeStart + zoom * 3 // 9000
 
-const items = [
-  {id: 1, group: 1, title: 'item 1', start_time: moment('1995-12-25'), end_time: moment('1995-12-25').add(1, 'hour')},
-  {id: 2, group: 2, title: 'item 2', start_time: moment('1995-12-25').add(-0.5, 'hour'), end_time: moment('1995-12-25').add(0.5, 'hour')},
-  {id: 3, group: 3, title: 'item 3', start_time: moment('1995-12-25').add(2, 'hour'), end_time: moment('1995-12-25').add(3, 'hour')}
-]
+const keys = {
+  rangeIdKey: 'id',
+  rangeTimeStartKey: 'start',
+  rangeTimeEndKey: 'end'
+}
 
-describe('Timeline', () => {
-  it('shows grouping no matter of the group order', () => {
-    const wrapper = mount(
-      <Timeline groups={groups}
-                items={items}
-                defaultTimeStart={moment('1995-12-25').add(-12, 'hour')}
-                defaultTimeEnd={moment('1995-12-25').add(12, 'hour')}
-                />,
+describe('Ranges', () => {
+  it('render Range in visible time', () => {
+    const wrapper = render(
+      <Ranges canvasTimeStart={canvasTimeStart}
+              canvasTimeEnd={canvasTimeEnd}
+              canvasWidth={defaults.canvasWidth}
+              height={defaults.height}
+              headerHeight={defaults.headerHeight}
+              keys={keys}
+              ranges={[{id: 1, start: 4000, end: 5000}]}
+              visibleTimeStart={defaults.visibleTimeStart}
+              visibleTimeEnd={defaults.visibleTimeEnd}
+      />
     )
-
-    // get the items parent
-    const itemsRendered = wrapper.find('.rct-items')
-
-    // array will hold the title and top-position for each item
-    var itemsOrder = []
-
-    // read for every item the title and the top-value and push it to itemsOrder[]
-    itemsRendered.props().children.forEach((itemRendered) => itemsOrder.push({
-      title: itemRendered.props.item.title,
-      top: itemRendered.props.dimensions.top
-    }))
-
-    // order the array by top-attribute
-    itemsOrder = itemsOrder.sort((a, b) => a.top - b.top)
-    expect(itemsOrder[0].title).toBe('item 2')
-    expect(itemsOrder[1].title).toBe('item 1')
-    expect(itemsOrder[2].title).toBe('item 3')
+    expect(wrapper).toMatchSnapshot()
   })
-  it('assigns top dimension to all items', () => {
-    const wrapper = mount(
-      <Timeline groups={groups}
-                items={items}
-                defaultTimeStart={moment('1995-12-25').add(-12, 'hour')}
-                defaultTimeEnd={moment('1995-12-25').add(12, 'hour')}
-                />,
+
+  it('do not render Range with end smaller than visible time start', () => {
+    const wrapper = render(
+      <Ranges canvasTimeStart={canvasTimeStart}
+              canvasTimeEnd={canvasTimeEnd}
+              canvasWidth={defaults.canvasWidth}
+              height={defaults.height}
+              headerHeight={defaults.headerHeight}
+              keys={keys}
+              ranges={[{id: 2, start: 1000, end: 2000}]}
+              visibleTimeStart={defaults.visibleTimeStart}
+              visibleTimeEnd={defaults.visibleTimeEnd}
+      />
     )
-
-    // get the items parent
-    const itemsRendered = wrapper.find('.rct-items')
-    itemsRendered.props().children.forEach((item) => {
-      expect(item.props.dimensions.top).not.toBeNull()
-    })
-  })
-  it('renders component with empty groups', () => {
-    let allCorrect = true
-    try {
-      mount(
-        <Timeline groups={[]}
-                  items={items}
-                  defaultTimeStart={moment('1995-12-25').add(-12, 'hour')}
-                  defaultTimeEnd={moment('1995-12-25').add(12, 'hour')}
-                  />,
-      )
-    } catch (err) {
-      allCorrect = false
-    }
-    expect(allCorrect).toBe(true)
+    expect(wrapper).toMatchSnapshot()
   })
 
-  it('renders items without corresponding group', () => {
-    let itemsNoValidGroup = [
-      {
-        start_time: moment('1995-12-25').add(-2, 'hour'),
-        end_time: moment('1995-12-25').add(2, 'hour'),
-        group: -1, // this ID is not found in groups!
-        id: 1,
-        title: 'Title'
-      }
-    ]
+  it('do not render Range with start after than visible time end', () => {
+    const wrapper = render(
+      <Ranges canvasTimeStart={canvasTimeStart}
+              canvasTimeEnd={canvasTimeEnd}
+              canvasWidth={defaults.canvasWidth}
+              height={defaults.height}
+              headerHeight={defaults.headerHeight}
+              keys={keys}
+              ranges={[{id: 3, start: 7000, end: 8000}]}
+              visibleTimeStart={defaults.visibleTimeStart}
+              visibleTimeEnd={defaults.visibleTimeEnd}
+      />
+    )
+    expect(wrapper).toMatchSnapshot()
+  })
 
-    let allCorrect = true
-    try {
-      mount(
-        <Timeline groups={groups}
-                  items={itemsNoValidGroup}
-                  defaultTimeStart={moment('1995-12-25').add(-12, 'hour')}
-                  defaultTimeEnd={moment('1995-12-25').add(12, 'hour')}
-                  />,
-      )
-    } catch (err) {
-      allCorrect = false
-    }
-    expect(allCorrect).toBe(true)
+  it('render Range that overlaps visible time start', () => {
+    const wrapper = render(
+      <Ranges canvasTimeStart={canvasTimeStart}
+              canvasTimeEnd={canvasTimeEnd}
+              canvasWidth={defaults.canvasWidth}
+              height={defaults.height}
+              headerHeight={defaults.headerHeight}
+              keys={keys}
+              ranges={[{id: 4, start: 2000, end: 4000}]}
+              visibleTimeStart={defaults.visibleTimeStart}
+              visibleTimeEnd={defaults.visibleTimeEnd}
+      />
+    )
+    expect(wrapper).toMatchSnapshot()
+  })
+
+  it('render Range that overlaps visible time end', () => {
+    const wrapper = render(
+      <Ranges canvasTimeStart={canvasTimeStart}
+              canvasTimeEnd={canvasTimeEnd}
+              canvasWidth={defaults.canvasWidth}
+              height={defaults.height}
+              headerHeight={defaults.headerHeight}
+              keys={keys}
+              ranges={[{id: 5, start: 5000, end: 7000}]}
+              visibleTimeStart={defaults.visibleTimeStart}
+              visibleTimeEnd={defaults.visibleTimeEnd}
+      />
+    )
+    expect(wrapper).toMatchSnapshot()
   })
 })
